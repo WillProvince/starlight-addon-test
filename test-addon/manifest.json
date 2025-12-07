@@ -1,0 +1,64 @@
+{
+  "id": "hello-starlight",
+  "name": "Starlight Test Addon",
+  "version": "1.0.0",
+  "description": "A basic test addon to verify the Starlight addon system is working correctly",
+  "author": "Starlight Team",
+  "license": "MIT",
+  "min_starlight_version": "1.0.0",
+  "permissions": [],
+
+  "frontend": {
+    "js": ["js/addon.js"],
+    "css": ["css/addon.css"],
+    "init_function": "StarlightTestAddon.init"
+  },
+
+  "backend": {
+    "module": "backend/handlers.py",
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/api/addon/hello-starlight/status",
+        "handler": "get_status"
+      },
+      {
+        "method": "GET",
+        "path": "/api/addon/hello-starlight/ping",
+        "handler": "ping"
+      },
+      {
+        "method": "POST",
+        "path": "/api/addon/hello-starlight/echo",
+        "handler": "echo"
+      }
+    ]
+  },
+
+  "hooks": {
+    "sidebar": [
+      {
+        "id": "main",
+        "label": "Test Addon",
+        "icon": "flask",
+        "page": "main",
+        "position": "bottom",
+        "order": 100
+      }
+    ],
+    "pages": [
+      {
+        "id": "main",
+        "title": "Test Addon",
+        "template": "frontend/pages/main.html"
+      }
+    ]
+  },
+
+  "lifecycle": {
+    "on_install": "on_install",
+    "on_uninstall": "on_uninstall",
+    "on_enable": "on_enable",
+    "on_disable": "on_disable"
+  }
+}
