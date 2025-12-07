@@ -1,0 +1,76 @@
+<div class="test-addon-container">
+    <h2><i class="fa-solid fa-flask"></i> Starlight Test Addon</h2>
+    <p>Use this page to verify that the Starlight addon system is functioning correctly.</p>
+    
+    <!-- Status Card -->
+    <div class="test-addon-card">
+        <h3><i class="fa-solid fa-heart-pulse"></i> Addon Status</h3>
+        <div id="test-addon-status">
+            <div class="test-addon-status-item">
+                <span class="label">Loading...</span>
+                <span class="value">Please wait</span>
+            </div>
+        </div>
+        <div class="test-addon-button-group" style="margin-top: 15px;">
+            <button id="test-addon-refresh-btn" class="test-addon-btn test-addon-btn-secondary" onclick="StarlightTestAddon.refresh()">
+                <i class="fa-solid fa-refresh"></i> Refresh Status
+            </button>
+        </div>
+    </div>
+    
+    <!-- Ping Test Card -->
+    <div class="test-addon-card">
+        <h3><i class="fa-solid fa-satellite-dish"></i> Ping Test</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">
+            Test the connection between the frontend and backend by sending a ping request.
+        </p>
+        <div class="test-addon-section">
+            <button id="test-addon-ping-btn" class="test-addon-btn" onclick="StarlightTestAddon.ping()">
+                <i class="fa-solid fa-paper-plane"></i> Ping Backend
+            </button>
+        </div>
+        <div id="test-addon-ping-result" class="test-addon-result"></div>
+    </div>
+    
+    <!-- Echo Test Card -->
+    <div class="test-addon-card">
+        <h3><i class="fa-solid fa-repeat"></i> Echo Test</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">
+            Send a message to the backend and receive it back to test POST request handling.
+        </p>
+        <div class="test-addon-section">
+            <input 
+                type="text" 
+                id="test-addon-echo-input" 
+                class="test-addon-input" 
+                placeholder="Enter a message to echo..."
+                value="Hello, Starlight!"
+            />
+            <button id="test-addon-echo-btn" class="test-addon-btn" onclick="StarlightTestAddon.sendEcho()">
+                <i class="fa-solid fa-paper-plane"></i> Send Echo
+            </button>
+        </div>
+        <div id="test-addon-echo-result" class="test-addon-result"></div>
+    </div>
+    
+    <!-- System Info Card -->
+    <div class="test-addon-card">
+        <h3><i class="fa-solid fa-circle-info"></i> Test Coverage</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 10px; font-size: 0.9rem;">
+            This addon tests the following addon system features:
+        </p>
+        <ul style="color: var(--text-secondary); font-size: 0.9rem; padding-left: 20px; line-height: 1.8;">
+            <li>✓ Manifest loading and parsing</li>
+            <li>✓ Backend module loading (Python)</li>
+            <li>✓ Frontend asset injection (JS/CSS)</li>
+            <li>✓ Sidebar navigation integration</li>
+            <li>✓ Page template rendering</li>
+            <li>✓ GET API route handling</li>
+            <li>✓ POST API route handling</li>
+            <li>✓ Lifecycle hooks (install, enable, disable, uninstall)</li>
+            <li>✓ Data persistence (save_data, load_data)</li>
+            <li>✓ Addon context injection</li>
+            <li>✓ Init function execution</li>
+        </ul>
+    </div>
+</div>
