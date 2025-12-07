@@ -32,18 +32,20 @@ const StarlightTestAddon = {
 
     /**
      * Fetch the addon status from the backend.
+     * Uses window.API.apiCall() which automatically includes JWT authentication.
      */
     async fetchStatus() {
         try {
-            const response = await fetch('/api/addon/hello-starlight/status');
-            const data = await response.json();
+            // Use window.API.apiCall() instead of fetch() - it handles auth automatically
+            // Note: Don't include '/api' prefix as apiCall() adds it via window.CONFIG.API_BASE
+            const data = await window.API.apiCall('/addon/starlight-test-addon/status');
 
-            if (data.status === 'success') {
+            if (data && data.status === 'success') {
                 this.state.status = data.data;
                 this.updateStatusDisplay();
                 console.log('[Test Addon] Status fetched:', data.data);
             } else {
-                console.error('[Test Addon] Failed to fetch status:', data.message);
+                console.error('[Test Addon] Failed to fetch status:', data?.message || 'Unknown error');
             }
         } catch (error) {
             console.error('[Test Addon] Error fetching status:', error);
@@ -52,6 +54,7 @@ const StarlightTestAddon = {
 
     /**
      * Send a ping request to the backend.
+     * Uses window.API.apiCall() which automatically includes JWT authentication.
      */
     async ping() {
         const button = document.getElementById('test-addon-ping-btn');
@@ -64,25 +67,29 @@ const StarlightTestAddon = {
         
         try {
             const startTime = Date.now();
-            const response = await fetch('/api/addon/starlight-test-addon/ping');
+            // Use window.API.apiCall() instead of fetch()
+            const data = await window.API.apiCall('/addon/starlight-test-addon/ping');
             const endTime = Date.now();
-            const data = await response.json();
             
-            const latency = endTime - startTime;
-            this.state.lastPing = {
-                latency: latency,
-                timestamp: data.data.timestamp
-            };
-            
-            if (resultEl) {
-                resultEl.innerHTML = `
-                    <span class="test-addon-success">✓ Pong received! </span>
-                    <span class="test-addon-latency">Latency: ${latency}ms</span>
-                `;
-                resultEl.classList.add('visible');
+            if (data && data.status === 'success') {
+                const latency = endTime - startTime;
+                this.state.lastPing = {
+                    latency: latency,
+                    timestamp: data.data.timestamp
+                };
+                
+                if (resultEl) {
+                    resultEl.innerHTML = `
+                        <span class="test-addon-success">✓ Pong received! </span>
+                        <span class="test-addon-latency">Latency: ${latency}ms</span>
+                    `;
+                    resultEl.classList.add('visible');
+                }
+                
+                console.log('[Test Addon] Ping successful:', latency, 'ms');
+            } else {
+                throw new Error(data?.message || 'Ping failed');
             }
-            
-            console.log('[Test Addon] Ping successful:', latency, 'ms');
         } catch (error) {
             if (resultEl) {
                 resultEl.innerHTML = `
@@ -101,13 +108,14 @@ const StarlightTestAddon = {
 
     /**
      * Send an echo request with custom data.
+     * Uses window.API.apiCall() which automatically includes JWT authentication.
      */
     async sendEcho() {
         const input = document.getElementById('test-addon-echo-input');
         const resultEl = document.getElementById('test-addon-echo-result');
         const button = document.getElementById('test-addon-echo-btn');
         
-        const message = input ?  input.value.trim() : 'Hello, Starlight! ';
+        const message = input ?  input.value.trim() : 'Hello, Starlight!';
         
         if (button) {
             button.disabled = true;
@@ -115,25 +123,22 @@ const StarlightTestAddon = {
         }
         
         try {
-            const response = await fetch('/api/addon/starlight-test-addon/echo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: message, timestamp: new Date().toISOString() })
+            // Use window.API.apiCall() with POST method instead of fetch()
+            // The third parameter is automatically JSON.stringify'd by apiCall()
+            const data = await window.API.apiCall('/addon/starlight-test-addon/echo', 'POST', {
+                message: message,
+                timestamp: new Date().toISOString()
             });
             
-            const data = await response.json();
-            
             if (resultEl) {
-                if (data.status === 'success') {
+                if (data && data.status === 'success') {
                     resultEl.innerHTML = `
-                        <span class="test-addon-success">✓ Echo received!</span>
+                        <span class="test-addon-success">✓ Echo received! </span>
                         <pre class="test-addon-json">${JSON.stringify(data.data.echoed, null, 2)}</pre>
                     `;
                 } else {
                     resultEl.innerHTML = `
-                        <span class="test-addon-error">✗ Echo failed: ${data.message}</span>
+                        <span class="test-addon-error">✗ Echo failed: ${data?.message || 'Unknown error'}</span>
                     `;
                 }
                 resultEl.classList.add('visible');
@@ -164,12 +169,12 @@ const StarlightTestAddon = {
         if (! statusEl || !this.state.status) return;
         
         const status = this.state.status;
-        const healthClass = status.healthy ?  'healthy' : 'unhealthy';
+        const healthClass = status.healthy ? 'healthy' : 'unhealthy';
         
         statusEl.innerHTML = `
             <div class="test-addon-status-item">
                 <span class="label">Status:</span>
-                <span class="value ${healthClass}">${status.healthy ? 'Healthy' : 'Unhealthy'}</span>
+                <span class="value ${healthClass}">${status.healthy ?  'Healthy' : 'Unhealthy'}</span>
             </div>
             <div class="test-addon-status-item">
                 <span class="label">Version:</span>
@@ -192,6 +197,7 @@ const StarlightTestAddon = {
 
     /**
      * Refresh all data from the backend.
+     * Uses window.API.apiCall() which automatically includes JWT authentication.
      */
     async refresh() {
         const button = document.getElementById('test-addon-refresh-btn');

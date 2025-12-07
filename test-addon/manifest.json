@@ -1,5 +1,5 @@
 {
-  "id": "hello-starlight",
+  "id": "starlight-test-addon",
   "name": "Starlight Test Addon",
   "version": "1.0.0",
   "description": "A basic test addon to verify the Starlight addon system is working correctly",
@@ -19,17 +19,17 @@
     "routes": [
       {
         "method": "GET",
-        "path": "/api/addon/hello-starlight/status",
+        "path": "/api/addon/starlight-test-addon/status",
         "handler": "get_status"
       },
       {
         "method": "GET",
-        "path": "/api/addon/hello-starlight/ping",
+        "path": "/api/addon/starlight-test-addon/ping",
         "handler": "ping"
       },
       {
         "method": "POST",
-        "path": "/api/addon/hello-starlight/echo",
+        "path": "/api/addon/starlight-test-addon/echo",
         "handler": "echo"
       }
     ]
