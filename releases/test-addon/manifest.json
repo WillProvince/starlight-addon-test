@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "A simple example addon",
   "author": "Starlight Team",
+  "icon": "mdi:test-tube",
   "archive_url": "https://github.com/WillProvince/starlight-addon-test/raw/refs/heads/main/releases/test-addon/test-addon.tar.gz",
   "archive_hash": "sha256:YOUR_HASH_HERE"
 }
