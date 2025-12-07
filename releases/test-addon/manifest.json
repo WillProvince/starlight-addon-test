@@ -1,0 +1,9 @@
+{
+  "id": "hello-starlight",
+  "name": "Hello Starlight",
+  "version": "1.0.0",
+  "description": "A simple example addon",
+  "author": "Starlight Team",
+  "archive_url": "https://github.com/WillProvince/starlight-addon-test/raw/refs/heads/main/releases/test-addon/test-addon.tar.gz",
+  "archive_hash": "sha256:YOUR_HASH_HERE"
+}
