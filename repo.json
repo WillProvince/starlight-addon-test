@@ -11,7 +11,7 @@
       "tags": ["addon", "debugging"],
       "version": "1.0.0",
       "author": "Starlight Team",
-      "icon": "mdi:testing",
+      "icon": "mdi:test-tube",
       "addon_manifest_url": "https://github.com/WillProvince/starlight-addon-test/raw/refs/heads/main/releases/test-addon/manifest.json"
     }
   ]
