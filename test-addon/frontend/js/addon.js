@@ -13,6 +13,9 @@ const StarlightTestAddon = {
         lastPing: null
     },
 
+    // Addon ID - must match the ID in manifest.json
+    ADDON_ID: 'starlight-test-addon',
+
     /**
      * Initialize the addon.
      * Called automatically by Starlight when the addon loads.
@@ -38,7 +41,7 @@ const StarlightTestAddon = {
         try {
             // Use window.API.apiCall() instead of fetch() - it handles auth automatically
             // Note: Don't include '/api' prefix as apiCall() adds it via window.CONFIG.API_BASE
-            const data = await window.API.apiCall('/addon/starlight-test-addon/status');
+            const data = await window.API.apiCall(`/addon/${this.ADDON_ID}/status`);
 
             if (data && data.status === 'success') {
                 this.state.status = data.data;
@@ -67,8 +70,8 @@ const StarlightTestAddon = {
         
         try {
             const startTime = Date.now();
-            // Use window.API.apiCall() instead of fetch()
-            const data = await window.API.apiCall('/addon/starlight-test-addon/ping');
+            // Use window.API.apiCall() instead of fetch() - use consistent ADDON_ID
+            const data = await window.API.apiCall(`/addon/${this.ADDON_ID}/ping`);
             const endTime = Date.now();
             
             if (data && data.status === 'success') {
@@ -115,7 +118,7 @@ const StarlightTestAddon = {
         const resultEl = document.getElementById('test-addon-echo-result');
         const button = document.getElementById('test-addon-echo-btn');
         
-        const message = input ?  input.value.trim() : 'Hello, Starlight!';
+        const message = input ?  input.value.trim() : 'Hello, Starlight! ';
         
         if (button) {
             button.disabled = true;
@@ -123,9 +126,8 @@ const StarlightTestAddon = {
         }
         
         try {
-            // Use window.API.apiCall() with POST method instead of fetch()
-            // The third parameter is automatically JSON.stringify'd by apiCall()
-            const data = await window.API.apiCall('/addon/starlight-test-addon/echo', 'POST', {
+            // Use window.API.apiCall() with POST method - use consistent ADDON_ID
+            const data = await window.API.apiCall(`/addon/${this.ADDON_ID}/echo`, 'POST', {
                 message: message,
                 timestamp: new Date().toISOString()
             });
@@ -169,12 +171,12 @@ const StarlightTestAddon = {
         if (! statusEl || !this.state.status) return;
         
         const status = this.state.status;
-        const healthClass = status.healthy ? 'healthy' : 'unhealthy';
+        const healthClass = status.healthy ?  'healthy' : 'unhealthy';
         
         statusEl.innerHTML = `
             <div class="test-addon-status-item">
                 <span class="label">Status:</span>
-                <span class="value ${healthClass}">${status.healthy ?  'Healthy' : 'Unhealthy'}</span>
+                <span class="value ${healthClass}">${status.healthy ? 'Healthy' : 'Unhealthy'}</span>
             </div>
             <div class="test-addon-status-item">
                 <span class="label">Version:</span>
